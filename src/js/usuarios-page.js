@@ -1,6 +1,5 @@
 import { obtenerChiste, obtenerUsuarios } from './http-provider.js';
 
-
 const body  = document.body;
 let tbody;
 let correlativo = 0;
@@ -88,4 +87,3 @@ export const init = async() => {
     ( await obtenerUsuarios() ).forEach( crearFilaUsuario );
 
 }
-
