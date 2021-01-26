@@ -2,6 +2,11 @@ const jokeUrl = 'https://api.chucknorris.io/jokes/random';
 // const jokeUrl = 'https://api.chucknorris.io/jokes/random12345'; // FAKE
 const urlUsuarios = 'https://reqres.in/api/users?page=2';
 
+// Variables para Cloudinary
+const cloudPreset = 'ml_default';
+const cloudUrl = 'https://api.cloudinary.com/v1_1/j0ttas/upload';
+
+
 
 const obtenerChiste = async() => {
 
@@ -41,7 +46,36 @@ const obtenerUsuarios = async() => {
     return usuarios;
 };
 
+// archivoSubir :: File
+const subirImagen = async( archivoSubir ) => {
+
+    const formData = new FormData();
+    formData.append( 'upload_preset', cloudPreset );
+    formData.append( 'file', archivoSubir );
+
+    try {
+
+        const resp = await fetch( cloudUrl, {
+            method: 'POST',
+            body: formData
+        });
+
+        if ( resp.ok ) {
+            const cloudResp = await resp.json();
+            console.log( "Y por el TRY también: ", cloudResp ); 
+            return cloudResp.secure_url;
+        } else {
+            throw await resp.json();
+        }
+
+    } catch( err ) {
+        console.warn( "Algo ha fallado en la petición HTTP!!!!" )
+        throw err;
+    }
+}
+
 export {
     obtenerChiste,
-    obtenerUsuarios
+    obtenerUsuarios,
+    subirImagen
 }
